@@ -1,0 +1,8 @@
+aiogmaps
+aiogram
+aioredis
+envparse
+googlemaps
+loguru
+psycopg2
+sqlalchemy
