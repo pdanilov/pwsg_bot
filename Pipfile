@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+aiogmaps = "*"
+aiogram = "*"
+aioredis = "*"
+envparse = "*"
+googlemaps = "*"
+loguru = "*"
+psycopg2-binary = "*"
+SQLAlchemy = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
