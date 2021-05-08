@@ -8,14 +8,14 @@ def store_user_place_photos(
     place: Place,
     photos: List[Photo],
 ):
-    user = user.from_db(session)
-    place = place.from_db(session)
+    user = user.from_db()
+    place = place.from_db()
 
     if place not in user.places:
         user.places.append(place)
 
     for photo in photos:
-        photo = photo.from_db(place, session)
+        photo = photo.from_db(place)
         photo.place = place
 
         if photo.place_id is None:

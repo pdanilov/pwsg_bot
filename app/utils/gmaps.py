@@ -1,6 +1,6 @@
 import io
 from tempfile import TemporaryFile
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple, Union
 
 from aiogram import types
 
@@ -8,8 +8,15 @@ from app.misc import gmaps_async_client, gmaps_client
 from app.models import Place
 
 
-def place_info_from_query(query: str) -> Optional[Dict]:
-    response = gmaps_client.places(query=query, language='ru')
+def place_info_from_query(
+    query: str,
+    *,
+    location: Union[Dict, List, Tuple],
+) -> Optional[Dict]:
+
+    response = gmaps_client.places(
+        query=query, language='ru', location=location
+    )
 
     if response['status'] != 'OK':
         return

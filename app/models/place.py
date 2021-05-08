@@ -1,7 +1,7 @@
 import sqlalchemy as sa
-from sqlalchemy.orm import relationship, Session
+from sqlalchemy.orm import relationship
 
-from app.models.db import TimedBaseModel
+from app.models.db import TimedBaseModel, session
 from app.models.relationship import user_to_place
 
 
@@ -22,7 +22,7 @@ class Place(TimedBaseModel):
         'Photo', cascade='all, delete-orphan', backref='place'
     )
 
-    def from_db(self, session: Session) -> 'Place':
+    def from_db(self) -> 'Place':
         place = (
             session
             .query(Place)

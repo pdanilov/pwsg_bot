@@ -16,7 +16,7 @@ session = Session(engine)
 class ReprBaseModel(Base):
     __abstract__ = True
 
-    def __repr__(self):
+    def columns(self) -> dict:
         try:
             columns = self.__table__.columns.keys()
             kwargs = {
@@ -26,12 +26,16 @@ class ReprBaseModel(Base):
         except AttributeError:
             kwargs = {}
 
+        return kwargs
+
+    def __repr__(self):
         class_repr = self.__class__.__name__
-        kwargs_repr = ', '.join(
+        columns = self.columns()
+        columns_repr = ', '.join(
             f'{k}={repr(v)}'
-            for k, v in kwargs.items()
+            for k, v in columns.items()
         )
-        return f'{class_repr}({kwargs_repr})'
+        return f'{class_repr}({columns_repr})'
 
 
 class TimedBaseModel(ReprBaseModel):

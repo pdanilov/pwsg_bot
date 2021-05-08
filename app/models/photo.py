@@ -1,7 +1,6 @@
 import sqlalchemy as sa
-from sqlalchemy.orm import Session
 
-from app.models.db import TimedBaseModel
+from app.models.db import TimedBaseModel, session
 from app.models.place import Place
 
 
@@ -12,7 +11,7 @@ class Photo(TimedBaseModel):
     telegram_file_id = sa.Column(sa.String, primary_key=True)
     telegram_file_unique_id = sa.Column(sa.String)
 
-    def from_db(self, place: Place, session: Session) -> 'Photo':
+    def from_db(self, place: Place) -> 'Photo':
         photo = (
             session
             .query(Photo)

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from sqlalchemy import desc
@@ -16,7 +18,7 @@ from app.utils.keyboards import MenuCB, start_keyboard, back_button
 
 @dp.message_handler(commands=['list'], state='*')
 async def cmd_list(message: types.Message, state: FSMContext):
-    await state.finish()
+    await state.reset_state(with_data=False)
 
     if message.get_args() == 'nearest':
         await state.set_state('LIST_NEAREST')
@@ -40,7 +42,7 @@ async def cmd_list(message: types.Message, state: FSMContext):
             )
             await state.set_state('LIST_RECENT')
         else:
-            await state.finish()
+            await state.reset_state(with_data=False)
             await message.answer(
                 'У вас нет сохраненных мест'
             )
@@ -74,7 +76,7 @@ async def cq_list(query: types.CallbackQuery, state: FSMContext):
 @dp.callback_query_handler(MenuCB.filter(action='back'),
                            state='CHOOSE_LIST_MODE')
 async def cq_back_to_main_menu(query: types.CallbackQuery, state: FSMContext):
-    await state.finish()
+    await state.reset_state(with_data=False)
     await query.message.edit_text(
         'Выберите действие', reply_markup=start_keyboard
     )
@@ -100,7 +102,7 @@ async def cq_nearest_places(query: types.CallbackQuery, state: FSMContext):
 @dp.message_handler(content_types=types.ContentType.LOCATION,
                     state='LIST_NEAREST')
 async def nearest_places(message: types.Message, state: FSMContext):
-    _ = User(telegram_user_id=message.from_user.id).from_db(session)
+    _ = User(telegram_user_id=message.from_user.id).from_db()
 
     dest_places = (
         session
@@ -110,6 +112,14 @@ async def nearest_places(message: types.Message, state: FSMContext):
         .filter(User.telegram_user_id == message.from_user.id)
         .all()
     )
+
+    location = message.location
+    user_location = {
+        'latitude': location.latitude,
+        'longitude': location.longitude,
+        'created_at': datetime.utcnow().isoformat(),
+    }
+    await state.update_data(user_location=user_location)
 
     dist_to_places = await distances_from_location_to_places(
         message.location, dest_places
@@ -126,7 +136,7 @@ async def nearest_places(message: types.Message, state: FSMContext):
         )
     else:
         await message.answer('Ближайших мест в радиусе 500 метров не найдено')
-        await state.finish()
+        await state.reset_state(with_data=False)
         await message.answer('Выберите действие', reply_markup=start_keyboard)
 
 
@@ -152,7 +162,7 @@ async def cq_recent_places(query: types.CallbackQuery, state: FSMContext):
         )
         await state.set_state('CHOOSE_PLACE')
     else:
-        await state.finish()
+        await state.reset_state(with_data=False)
         await query.message.answer('У вас нет сохраненных мест')
         await query.message.answer(
             'Выберите действие', reply_markup=start_keyboard
@@ -172,7 +182,7 @@ async def cq_show_place(
         place.latitude, place.longitude, place.title, place.address
     )
     await show_place_photos(query.message, photos)
-    await state.finish()
+    await state.reset_state(with_data=False)
     await query.message.answer(
         'Выберите действие', reply_markup=start_keyboard
     )

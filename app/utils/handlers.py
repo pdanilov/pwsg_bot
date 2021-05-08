@@ -3,7 +3,7 @@ from typing import List, Union
 from aiogram import types
 from aiogram.utils.callback_data import CallbackData
 
-from app.models import Photo, Place
+from app.models import Place
 from app.utils.keyboards import back_button
 
 ListModeCB = CallbackData('list', 'mode')
@@ -13,26 +13,16 @@ AddModeCB = CallbackData('add', 'mode')
 
 async def show_place_photos(
     message: types.Message, photos: List[Union[str, types.InputFile]]
-) -> List[Photo]:
-    out_photos = []
-
-    if not photos:
-        return out_photos
-
+) -> List[types.Message]:
     input_media_photos = [
         types.InputMediaPhoto(in_photo)
         for in_photo in photos
     ]
-    msgs = await message.answer_media_group(input_media_photos)
-    for msg in msgs:
-        photo = msg.photo[-1]
-        file_id, file_unique_id = photo.file_id, photo.file_unique_id
-        photo = Photo(
-            telegram_file_id=file_id,
-            telegram_file_unique_id=file_unique_id,
-        )
-        out_photos.append(photo)
-    return out_photos
+    msgs = (
+        await message.answer_media_group(input_media_photos) if photos
+        else []
+    )
+    return msgs
 
 
 def get_show_places_keyboard(

@@ -10,7 +10,7 @@ from app.utils.keyboards import (
 
 @dp.message_handler(commands=['reset'], state='*')
 async def cmd_reset(message: types.Message, state: FSMContext):
-    await state.finish()
+    await state.reset_state(with_data=False)
     await message.answer(
         'Вы действительно хотите удалить все сохраненные места?',
         reply_markup=confirm_cancel_keyboard,
@@ -19,7 +19,7 @@ async def cmd_reset(message: types.Message, state: FSMContext):
 
 @dp.callback_query_handler(MenuCB.filter(action='reset'))
 async def cq_reset(query: types.CallbackQuery, state: FSMContext):
-    await state.finish()
+    await state.reset_state(with_data=False)
     await query.message.edit_text(
         'Вы действительно хотите удалить все сохраненные места?',
         reply_markup=confirm_cancel_keyboard,

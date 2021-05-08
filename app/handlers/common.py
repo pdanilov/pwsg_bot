@@ -9,7 +9,7 @@ from app.utils.keyboards import start_keyboard
 
 @dp.message_handler(commands=['start'], state='*')
 async def cmd_start(message: types.Message, state: FSMContext):
-    await state.finish()
+    await state.reset_state(with_data=False)
     text = (
         f'Привет, {message.from_user.full_name}\n'
         'Можешь отправить команду /help, чтобы узнать список доступных команд '
@@ -21,7 +21,7 @@ async def cmd_start(message: types.Message, state: FSMContext):
 
 @dp.message_handler(commands=['help'], state='*')
 async def cmd_help(message: types.Message, state: FSMContext):
-    await state.finish()
+    await state.reset_state(with_data=False)
     text = '\n'.join((
         hbold('Доступные команды:'),
         '',
@@ -39,7 +39,7 @@ async def cmd_help(message: types.Message, state: FSMContext):
 
 @dp.message_handler(commands=['cancel', 'menu'], state='*')
 async def cmd_main_menu(message: types.Message, state: FSMContext):
-    await state.finish()
+    await state.reset_state(with_data=False)
     await message.answer('Выберите действие', reply_markup=start_keyboard)
 
 
