@@ -4,4 +4,4 @@ from .place import Place
 from .relationship import user_to_place
 from .user import User
 
-__all__ = ['engine', 'session', 'Photo', 'Place', 'user_to_place', 'User']
+__all__ = ["engine", "session", "Photo", "Place", "user_to_place", "User"]

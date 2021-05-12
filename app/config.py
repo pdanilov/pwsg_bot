@@ -1,21 +1,32 @@
 from pathlib import Path
 
-from envparse import env, ConfigurationError
+from envparse import ConfigurationError, env
 
-dotenv = Path(__file__).parent.parent / '.env'
-if dotenv.is_file():
-    env.read_envfile(path=dotenv)
+dotenv = Path(__file__).parent.parent / ".env"
+env.read_envfile(path=dotenv)
 
-BOT_TOKEN = env.str('BOT_TOKEN')
-GOOGLE_MAPS_API_KEY = env.str('GOOGLE_MAPS_API_KEY')
-REDIS_URL = env.str('REDIS_URL')
-DATABASE_URL = env.str('DATABASE_URL')
+BOT_TOKEN = env.str("BOT_TOKEN")
+GOOGLE_MAPS_API_KEY = env.str("GOOGLE_MAPS_API_KEY")
+REDIS_HOST = env.str("REDIS_HOST")
+REDIS_PORT = env.str("REDIS_PORT")
+POSTGRES_HOST = env.str("POSTGRES_HOST")
+POSTGRES_PORT = env.str("POSTGRES_PORT")
+POSTGRES_USER = env.str("POSTGRES_USER")
+POSTGRES_PASSWORD = env.str("POSTGRES_PASSWORD")
+POSTGRES_DB = env.str("POSTGRES_DB")
+POSTGRES_DIALECT = env.str("POSTGRES_DIALECT")
 
-schema = 'postgresql'
+schema = "postgresql"
 try:
-    dialect = env.str('POSTGRES_DIALECT')
-    schema += f'+{dialect}'
+    schema += f"+{POSTGRES_DIALECT}"
 except ConfigurationError:
     pass
 
-POSTGRESQL_URI = DATABASE_URL.replace('postgres', schema, 1)
+POSTGRES_URI = (
+    f"{schema}://"
+    f"{POSTGRES_USER}:"
+    f"{POSTGRES_PASSWORD}@"
+    f"{POSTGRES_HOST}:"
+    f"{POSTGRES_PORT}/"
+    f"{POSTGRES_DB}"
+)

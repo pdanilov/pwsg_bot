@@ -1,13 +1,9 @@
 from typing import List
 
-from app.models import session, Photo, Place, User
+from app.models import Photo, Place, User, session
 
 
-def store_user_place_photos(
-    user: User,
-    place: Place,
-    photos: List[Photo],
-):
+def store_user_place_photos(user: User, place: Place, photos: List[Photo]):
     user = user.from_db()
     place = place.from_db()
 

@@ -14,6 +14,9 @@ psycopg2-binary = "*"
 SQLAlchemy = "*"
 
 [dev-packages]
+black = "==21.5b1"
+isort = "==5.8.0"
+flake8 = "==3.9.2"
 
 [requires]
 python_version = "3.9"

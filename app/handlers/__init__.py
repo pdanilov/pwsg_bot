@@ -1,6 +1,12 @@
+"""
+isort:skip_file
+"""
+
+
 def setup():
     from loguru import logger
-    logger.info('Configure handlers')
+
+    logger.info("Configure handlers")
 
     from . import common
     from . import add

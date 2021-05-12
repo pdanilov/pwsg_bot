@@ -9,6 +9,6 @@ executor = Executor(dp)
 
 
 def setup():
-    logger.info('Configure executor')
+    logger.info("Configure executor")
     db.setup(executor)
     dispatcher.setup(executor)
