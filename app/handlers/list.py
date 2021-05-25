@@ -7,7 +7,12 @@ from sqlalchemy import desc
 from app.misc import dp
 from app.models import Place, User, session
 from app.utils.gmaps import distances_from_location_to_places
-from app.utils.handlers import ListModeCB, PlaceCB, get_show_places_keyboard, show_place_photos
+from app.utils.handlers import (
+    ListModeCB,
+    PlaceCB,
+    get_show_places_keyboard,
+    show_place_photos,
+)
 from app.utils.keyboards import MenuCB, back_button, start_keyboard
 
 

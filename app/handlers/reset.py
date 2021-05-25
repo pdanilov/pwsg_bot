@@ -3,7 +3,12 @@ from aiogram.dispatcher import FSMContext
 
 from app.misc import dp
 from app.models import Place, User, session
-from app.utils.keyboards import ConfirmCB, MenuCB, confirm_cancel_keyboard, start_keyboard
+from app.utils.keyboards import (
+    ConfirmCB,
+    MenuCB,
+    confirm_cancel_keyboard,
+    start_keyboard,
+)
 
 
 @dp.message_handler(commands=["reset"], state="*")
