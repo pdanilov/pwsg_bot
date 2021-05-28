@@ -1,9 +1,9 @@
 FROM python:3.9.5 AS production
 WORKDIR /code
-COPY Pipfile* .
+COPY Pipfile* ./
 RUN pip install pipenv
 RUN pipenv install --system --deploy
-COPY . .
+COPY . ./
 ENTRYPOINT ["python", "-m", "app"]
 
 FROM production AS development
