@@ -10,6 +10,6 @@ You also need to install [Docker](https://docs.docker.com/get-docker/)
 and [Docker Compose](https://docs.docker.com/compose/install/).
 Then simply run:
 ```
-$ docker-compose up
+docker-compose -f docker-compose.yaml -f docker-compose.prod.yaml up
 ```
 You'll probably have to run this command with sudo privileges.
